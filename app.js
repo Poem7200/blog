@@ -1,3 +1,4 @@
+const querystring = require('querystring');
 // 这里只是放处理路由的方法，因此不要把处理blog和username的详细过程放在这里
 const handleBlogRouter = require('./src/router/blog');
 const handleUserRouter = require('./src/router/user');
@@ -9,6 +10,9 @@ const serverHandle = (req, res) => {
   // 可以把处理两种不同路由里写的一些重复的东西提取到这里来，例如path
   const url = req.url;
   req.path = url.split('?')[0];
+
+  // 解析query
+  req.query = querystring.parse(url.split('?')[0]);
 
   // 处理blog路由
   const blogData = handleBlogRouter(req, res);

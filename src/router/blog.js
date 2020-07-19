@@ -1,12 +1,17 @@
+const { getList } = require('../controller/blog');
+const { SuccessModel, ErrorModel } = require('../model/resModel');
+
 const handleBlogRouter = (req, res) => {
   const method = req.method; // 获取method，即get/post
 
   // 获取博客列表
   if (method === 'GET' && req.path === '/api/blog/list') {
-    // 以下的return实际上就是返回的消息体
-    return {
-      msg: '这是获取博客列表的接口'
-    }
+    const author = req.query.author || '';
+    const keyword = req.query.keyword || '';
+    const listData = getList(author, keyword);
+    
+    // 以下的return实际上就是返回的消息体，可以直接用model来创建这个消息体
+    return new SuccessModel(listData);
   }
 
   // 获取博客详情

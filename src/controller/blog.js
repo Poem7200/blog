@@ -29,4 +29,24 @@ const getDetail = id => {
   }
 }
 
-module.exports = { getList, getDetail }
+const newBlog = (blogData = {}) => {
+  // blogData是博客对象，包含title、content属性
+  // 这里是用来测试blogData的，可以在postman里试试
+  console.log('newBlog blogData...', blogData);
+  
+  return {
+    id: 3 // 新建博客插入到数据表的id
+  }
+}
+
+const updateBlog = (id, blogData = {}) => {
+  // id为需要更新博客的id
+  // blogData是一个博客对象，包含title、content等属性
+
+  // 下面是用来测试blogData的，可以在postman里试试
+  console.log('update blog', id, blogData);
+  
+  return true;
+}
+
+module.exports = { getList, getDetail, newBlog, updateBlog }

@@ -3,6 +3,7 @@ const { SuccessModel, ErrorModel } = require('../model/resModel');
 
 const handleBlogRouter = (req, res) => {
   const method = req.method; // 获取method，即get/post
+  const id = req.query.id;
 
   // 获取博客列表
   if (method === 'GET' && req.path === '/api/blog/list') {
@@ -18,23 +19,25 @@ const handleBlogRouter = (req, res) => {
 
   // 获取博客详情
   if (method === 'GET' && req.path === '/api/blog/detail') {
-    const id = req.query.id;
-    const detailData = getDetail(id);
-    
-    // 以下的return实际上就是返回的消息体
-    return new SuccessModel(detailData);
+    const result = getDetail(id);
+    return result.then(data => {
+      return new SuccessModel(data);
+    });
   }
 
   // 新建博客
   if (method === 'POST' && req.path === '/api/blog/new') {
-    const blogData = req.body;
-    const data = newBlog(blogData);
-    return new SuccessModel(data);
+    // TODO: 这里body里因为没有登录，没法儿拿到author，待开发登录时再改成真实数据
+    req.body.author = 'shige';
+
+    const result = newBlog(req.body);
+    return result.then(data => {
+      return new SuccessModel(data);
+    });
   }
 
   // 更新博客
   if (method === 'POST' && req.path === '/api/blog/update') {
-    const id = req.query.id;
     const result = updateBlog(id, req.body);
     if (result) {
       return new SuccessModel;

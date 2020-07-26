@@ -15,23 +15,26 @@ const getList = (author, keyword) => {
 }
 
 const getDetail = id => {
-  return {
-    id: 1,
-    title: '标题1',
-    content: '内容1',
-    createTime: 1595151955704,
-    author: 'test1'
-  }
+  const sql = `select * from blogs where id='${id}';`;
+  return exec(sql).then(rows => {
+    return rows[0];
+  });
 }
 
 const newBlog = (blogData = {}) => {
-  // blogData是博客对象，包含title、content属性
-  // 这里是用来测试blogData的，可以在postman里试试
-  console.log('newBlog blogData...', blogData);
+  // blogData是一个博客对象，包含了title、content、author等属性
+  const { title, content, author } = blogData;
+  const createTime = Date.now();
+
+  const sql = `insert into blogs (title, content, author, createTime)
+  values ('${title}', '${content}', '${author}', ${createTime});`
   
-  return {
-    id: 3 // 新建博客插入到数据表的id
-  }
+  return exec(sql).then(insertData => {
+    console.log('insertData is ', insertData);
+    return {
+      id: insertData.insertId
+    }
+  });
 }
 
 const updateBlog = (id, blogData = {}) => {

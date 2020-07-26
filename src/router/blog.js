@@ -8,10 +8,12 @@ const handleBlogRouter = (req, res) => {
   if (method === 'GET' && req.path === '/api/blog/list') {
     const author = req.query.author || '';
     const keyword = req.query.keyword || '';
-    const listData = getList(author, keyword);
     
-    // 以下的return实际上就是返回的消息体，可以直接用model来创建这个消息体
-    return new SuccessModel(listData);
+    const result = getList(author, keyword);
+    // 注意这里返回的是一个promise，所以需要在外侧也return一下
+    return result.then(listData => {
+      return new SuccessModel(listData);
+    });
   }
 
   // 获取博客详情

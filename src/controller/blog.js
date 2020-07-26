@@ -30,7 +30,6 @@ const newBlog = (blogData = {}) => {
   values ('${title}', '${content}', '${author}', ${createTime});`
   
   return exec(sql).then(insertData => {
-    console.log('insertData is ', insertData);
     return {
       id: insertData.insertId
     }
@@ -40,16 +39,27 @@ const newBlog = (blogData = {}) => {
 const updateBlog = (id, blogData = {}) => {
   // id为需要更新博客的id
   // blogData是一个博客对象，包含title、content等属性
+  const { title, content } = blogData;
 
-  // 下面是用来测试blogData的，可以在postman里试试
-  console.log('update blog', id, blogData);
-  
-  return true;
+  const sql = `update blogs set title='${title}', content='${content}' where id=${id};`;
+  return exec(sql).then(updateData => {
+    console.log('updateData is ', updateData);
+    if (updateData.affectedRows > 0) {
+      return true;
+    }
+    return false;
+  });
 }
 
-const delBlog = id => {
+const delBlog = (id, author) => {
   // id为要删除博客的id
-  return true;
+  const sql = `delete from blogs where id=${id} and author='${author}';`;
+  return exec(sql).then(delData => {
+    if (delData.affectedRows > 0) {
+      return true;
+    }
+    return false;
+  });
 }
 
 module.exports = { getList, getDetail, newBlog, updateBlog, delBlog }

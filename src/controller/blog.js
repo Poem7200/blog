@@ -4,10 +4,10 @@ const getList = (author, keyword) => {
   // 这里SQL语句的1=1只是为了占位
   let sql = `select * from blogs where 1=1 `;
   if (author) {
-    sql += `and author=${author} `;
+    sql += `and author='${author}' `;
   }
   if (keyword) {
-    sql += `and keyword like '%${keyword}%' `;
+    sql += `and title like '%${keyword}%' `;
   }
   sql += `order by createTime desc;`
 

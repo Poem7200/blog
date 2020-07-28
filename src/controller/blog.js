@@ -43,7 +43,6 @@ const updateBlog = (id, blogData = {}) => {
 
   const sql = `update blogs set title='${title}', content='${content}' where id=${id};`;
   return exec(sql).then(updateData => {
-    console.log('updateData is ', updateData);
     if (updateData.affectedRows > 0) {
       return true;
     }
@@ -55,6 +54,7 @@ const delBlog = (id, author) => {
   // id为要删除博客的id
   const sql = `delete from blogs where id=${id} and author='${author}';`;
   return exec(sql).then(delData => {
+    console.log(delData);
     if (delData.affectedRows > 0) {
       return true;
     }

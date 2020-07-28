@@ -50,8 +50,9 @@ const serverHandle = (req, res) => {
       return;
     }
     const arr = item.split('=');
-    const key = arr[0];
-    const val = arr[1];
+    // 应对新增的cookie在；后有一个空格，需要删除
+    const key = arr[0].trim();
+    const val = arr[1].trim();
     req.cookie[key] = val;
   });
 
